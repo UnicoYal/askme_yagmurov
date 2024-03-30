@@ -1,0 +1,12 @@
+* {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.custom-badge {
+  width: 100px; /* Задаем ширину в пикселях */
+  margin-right: 20px; /* Увеличиваем отступ справа */
+}
+
+.dark-bottom-border {
+  border-bottom: 1px solid black;
+}
