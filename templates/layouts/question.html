@@ -1,0 +1,36 @@
+{% load static %}
+<article class="card mb-3 w-100">
+    <div class="row g-0">
+        <div class="col-3 p-2">
+          <div class="border border-dark w-100 mb-3">
+            <img
+              src="{% static 'images/img.jpg' %}"
+              class="img-fluid rounded-start"
+              alt="..."
+            />
+          </div>
+            <div class="input-group flex-nowrap">
+                <input type="number" value="5" class="form-control"/>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url "question" item.id %}">{{ item.title }}</a>
+                </h5>
+                <p class="card-text">
+                    {{ item.text }}
+                </p>
+                <div class="row">
+                    <a class="col-4" href="{% url "question" item.id %}">answers (3)</a>
+                    <div class="col-8">
+                        <span>Tags</span>
+                        {% for tag in item.tags %}
+                        <a href="{% url "tag" tag %}">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
