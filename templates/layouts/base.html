@@ -63,14 +63,14 @@
           <h3>Popular Tags</h3>
           <div class="row">
             <div class="col d-flex flex-wrap">
-               <span class="badge text-bg-primary custom-badge mt-3">{{ TAGS.0 }}</span>
-               <span class="badge text-bg-secondary custom-badge mt-3">{{ TAGS.1 }}</span>
-               <span class="badge text-bg-success custom-badge mt-3">{{ TAGS.2 }}</span>
-               <span class="badge text-bg-danger custom-badge mt-3">{{ TAGS.3 }}</span>
-               <span class="badge text-bg-warning custom-badge mt-3">{{ TAGS.4 }}</span>
-               <span class="badge text-bg-info custom-badge mt-3">{{ TAGS.5 }}</span>
-               <span class="badge text-bg-secondary custom-badge mt-3">{{ TAGS.6 }}</span>
-               <span class="badge text-bg-dark custom-badge mt-3">{{ TAGS.7 }}</span>
+               <a href="{% url "tag" TAGS.0 %}"><span class="badge text-bg-primary custom-badge mt-3">{{ TAGS.0 }}</span></a>
+               <a href="{% url "tag" TAGS.1 %}"><span class="badge text-bg-secondary custom-badge mt-3">{{ TAGS.1 }}</span></a>
+               <a href="{% url "tag" TAGS.2 %}"><span class="badge text-bg-success custom-badge mt-3">{{ TAGS.2 }}</span></a>
+               <a href="{% url "tag" TAGS.3 %}"><span class="badge text-bg-danger custom-badge mt-3">{{ TAGS.3 }}</span></a>
+               <a href="{% url "tag" TAGS.4 %}"><span class="badge text-bg-warning custom-badge mt-3">{{ TAGS.4 }}</span></a>
+               <a href="{% url "tag" TAGS.5 %}"><span class="badge text-bg-info custom-badge mt-3">{{ TAGS.5 }}</span></a>
+               <a href="{% url "tag" TAGS.6 %}"><span class="badge text-bg-secondary custom-badge mt-3">{{ TAGS.6 }}</span></a>
+               <a href="{% url "tag" TAGS.7 %}"><span class="badge text-bg-dark custom-badge mt-3">{{ TAGS.7 }}</span></a>
             </div>
            </div>
           <h3 class="mt-5">Best Members</h3>

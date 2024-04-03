@@ -36,11 +36,11 @@
 
         {% for answer in answers %}
 
-        {% include "layouts/answer.html" with item=answer %}
+        {% include "components/answer.html" with item=answer %}
 
         {% endfor %}
 
-        {% include "layouts/pagination.html" with page_obj=answers %}
+        {% include "components/pagination.html" with page_obj=answers %}
 
       <form>
         <div class="form-group row mt-3">
