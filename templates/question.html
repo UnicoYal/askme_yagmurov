@@ -12,21 +12,19 @@
                 alt="..."
               />
             </div>
-            <div class="input-group flex-nowrap border border-dark">
-              <input type="number" value="5" class="form-control" />
-            </div>
+            {% include "components/like_selection.html" with item=question %}
           </div>
           <div class="col-8 mb-3 pt-1">
               <h5 class="d-flex justify-content-between">
                 {{ question.title }}
               </h5>
               <p>
-                {{ question.text }}
+                {{ question.body }}
               </p>
               <div class="row">
                 <div class="col-8">
                   <span>Tags</span>
-                  {% for tag in question.tags %}
+                  {% for tag in question.tags.all %}
                   <a href="{% url "tag" tag %}">{{ tag }}</a>
                   {% endfor %}
                 </div>
