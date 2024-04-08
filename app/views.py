@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from app.models import Question
 
 def index(request):
@@ -35,7 +35,7 @@ def question(request, question_id):
   try:
     item = Question.objects.get_by_id(question_id)
   except:
-    return render(request, "errors/404.html", status=404)
+    raise Http404('Question does not exists')
 
   page_obj = paginate(item.answers.all(), request, 3)
   previous_page_url, next_page_url = generate_page_urls(request, page_obj)

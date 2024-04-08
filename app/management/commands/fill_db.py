@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from app.models import Profile, Question, Answer, Tag, Mark
+from app.models import Profile, Question, Answer, Tag, QuestionMark, AnswerMark
 from django.contrib.auth.models import User
 from faker import Faker
 import random
@@ -23,9 +23,6 @@ class Command(BaseCommand):
     self.create_questions(ratio * 10)
     self.create_answers(ratio * 100)
     self.create_marks(ratio * 200)
-    self.calculate_questions_ratings()
-    self.calculate_answers_ratings()
-    self.boost_hottest_questions()
 
   def create_users(self, count):
     print('Create users')
@@ -131,83 +128,29 @@ class Command(BaseCommand):
     print('Finish answers')
 
   def create_marks(self, count):
-    users = User.objects.all()
     answers = Answer.objects.all()
+    users = User.objects.all()
     questions = Question.objects.all()
-    marks = []
+    question_marks = []
+    answer_marks = []
+    qm = 0
+    am = 0
     values = [-1, 1]
 
     print('Create marks')
     for i in range(count):
-      user = random.choice(users)
+      print(i)
       value = random.choice(values)
       if random.choice([True, False]):  # рандомно выбираем между вопросами и ответами
-          question = random.choice(questions)
-          marks.append(Mark(user=user, question=question, value=value))
+          question = questions[i % (len(questions)-1)]
+          user = (i % (len(users) - 1))+1
+          question_marks.append(QuestionMark(question=question, value=value, user_id=user))
       else:
-          answer = random.choice(answers)
-          marks.append(Mark(user=user, answer=answer, value=value))
+          answer = answers[i % (len(answers)-1)]
+          user = (i % (len(users) - 1))+1
+          answer_marks.append(AnswerMark(answer=answer, value=value, user_id=user))
 
-    Mark.objects.bulk_create(marks[:200000])
-    print('200_000')
-    Mark.objects.bulk_create(marks[200000:400000])
-    print('400_000')
-    Mark.objects.bulk_create(marks[400000:600000])
-    print('600_000')
-    Mark.objects.bulk_create(marks[600000:800000])
-    print('800_000')
-    Mark.objects.bulk_create(marks[800000:1000000])
-    print('1_000_000')
-    Mark.objects.bulk_create(marks[1000000:1200000])
-    print('1_200_000')
-    Mark.objects.bulk_create(marks[1200000:1400000])
-    print('1_400_000')
-    Mark.objects.bulk_create(marks[1400000:1600000])
-    print('1_600_000')
-    Mark.objects.bulk_create(marks[1600000:1800000])
-    print('1_800_000')
-    Mark.objects.bulk_create(marks[1800000:])
-    print('2_000_000')
+    QuestionMark.objects.bulk_create(question_marks)
+    AnswerMark.objects.bulk_create(answer_marks)
 
     print('Finish marks')
-
-
-  def calculate_questions_ratings(self):
-    print('Start calculate questions ratings')
-
-    questions_with_sum_marks = Question.objects.annotate(
-      total_marks=Coalesce(Sum('mark__value'), 0)
-    )
-
-    for question in questions_with_sum_marks:
-      if question.total_marks != 0:
-        question.rating = question.total_marks
-        question.save(update_fields=['rating'])
-
-    print('Finish calculate questions ratings')
-
-  def calculate_answers_ratings(self):
-    print('Start calculate answers ratings')
-
-    answers_with_sum_marks = Answer.objects.annotate(
-      total_marks=Coalesce(Sum('mark__value'), 0)
-    )
-
-    for answer in answers_with_sum_marks:
-      if answer.total_marks != 0:
-        answer.rating = answer.total_marks
-        answer.save(update_fields=['rating'])
-
-    print('Finish calculate answers ratings')
-
-  def boost_hottest_questions(self):
-    print('Start boosting questions ratings')
-
-    questions = Question.objects.all()[3000:3030]
-    for question in questions:
-      question.rating = 3
-      question.save(update_fields=['rating'])
-      for i in range(3):
-        Mark.objects.create(question=question, value=1, user=question.user)
-
-    print('Finish boosting questions ratings')
