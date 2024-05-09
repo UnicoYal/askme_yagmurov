@@ -10,14 +10,12 @@
           alt="..."
         />
       </div>
-      <div class="input-group flex-nowrap border border-dark">
-        <input type="number" value="5" class="form-control" />
-      </div>
+      {% include "components/like_selection.html" with item=answer %}
     </div>
     <div class="col">
       <div class="card-body">
         <p class="card-text">
-          {{ item.text }}
+          {{ item.body }}
         </p>
         <div class="row">
           <div class="col-8">
