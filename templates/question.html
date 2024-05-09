@@ -1,5 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block content %}
       <div class="col-8">
@@ -40,10 +41,11 @@
 
         {% include "components/pagination.html" with page_obj=answers %}
 
-      <form>
+      <form method="post", action="{% url 'question' question.id %}">
+        {% csrf_token %}
         <div class="form-group row mt-3">
           <div class="container">
-            <textarea class="form-control border-dark" id="text_input" placeholder="Enter your answer here.." rows="5"></textarea>
+            {% bootstrap_form form %}
           </div>
         </div>
 
