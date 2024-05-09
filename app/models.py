@@ -130,7 +130,7 @@ class ProfileManager(models.Manager):
 # Рейтинг пользователя будет складываться из рейтинга его вопросов и ответов
 class Profile(models.Model):
   user = models.OneToOneField(User, on_delete=models.PROTECT)
-  avatar = models.ImageField(null=True, blank=True)
+  avatar = models.ImageField(null=True, blank=True, default='base.jpg')
   rating = models.IntegerField(default=0)
   bio = models.TextField(blank=True)
 
