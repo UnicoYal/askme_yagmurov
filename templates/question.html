@@ -7,11 +7,19 @@
         <div class="row g-0 dark-bottom-border">
           <div class="col-3 p-2">
             <div class="border border-dark w-100 mb-3">
-              <img
-                src="{% static 'images/img.jpg' %}"
-                class="img-fluid rounded-start"
-                alt="..."
-              />
+            {% if question.user.profile.avatar %}
+                <img
+                  src="{{ question.user.profile.avatar.url }}"
+                  class="img-fluid rounded-start"
+                  alt="..."
+                />
+            {% else %}
+                <img
+                  src="{% static 'images/img.jpg' %}"
+                  class="img-fluid rounded-start"
+                  alt="..."
+                />
+            {% endif %}
             </div>
             {% include "components/like_selection.html" with item=question %}
           </div>

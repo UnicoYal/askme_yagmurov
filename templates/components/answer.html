@@ -4,11 +4,19 @@
   <div class="row g-0">
     <div class="col-3 p-2">
       <div class="border border-dark w-100 mb-3">
-        <img
-          src="{% static 'images/img.jpg' %}"
-          class="img-fluid rounded-start"
-          alt="..."
-        />
+      {% if item.user.profile.avatar %}
+          <img
+            src="{{ item.user.profile.avatar.url }}"
+            class="img-fluid rounded-start"
+            alt="..."
+          />
+      {% else %}
+          <img
+            src="{% static 'images/img.jpg' %}"
+            class="img-fluid rounded-start"
+            alt="..."
+          />
+      {% endif %}
       </div>
       {% include "components/like_selection.html" with item=answer %}
     </div>
@@ -20,7 +28,7 @@
         <div class="row">
           <div class="col-8">
             <div class="form-check">
-              <input class="form-check-input border-dark" type="checkbox" value="" id="correct_checkbox">
+              <input class="form-check-input border-dark" type="checkbox" id="correct_checkbox" data-id="{{ item.id }}" data-value="{{ item.is_correct }}">
               <label class="form-check-label" for="correct_checkbox">
                 Correct!
               </label>

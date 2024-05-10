@@ -12,6 +12,8 @@
       crossorigin="anonymous"
     />
     <link rel= "stylesheet" href="{% static 'stylesheets/application.css' %}"/>
+
+    {% csrf_token %}
   </head>
   <body class="d-flex flex-column min-vh-100">
     <nav class="navbar bg-body-tertiary">
@@ -89,5 +91,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script src="{% static '/js/main.js' %}"></script>
   </body>
 </html>
