@@ -69,6 +69,12 @@ class Question(models.Model):
   def __str__(self):
     return self.title
 
+  def model_name(self):
+    return self._meta.model_name
+
+  def has_mark_by_user(self, user):
+    marks = QuestionMark.objects.filter(user=user, question=self)
+    return marks.exists()
 #!---------------------------ANSWER-------------------------------------!
 
 class Answer(models.Model):
@@ -85,6 +91,13 @@ class Answer(models.Model):
 
   def __str__(self):
     return self.body
+
+  def model_name(self):
+    return self._meta.model_name
+
+  def has_mark_by_user(self, user):
+    marks = AnswerMark.objects.filter(user=user, answer=self)
+    return marks.exists()
 
 #!---------------------------MARK-------------------------------------!
 

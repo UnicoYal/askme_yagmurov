@@ -11,6 +11,10 @@ urlpatterns = [
   path('signup/', views.signup, name='signup'),
   path('ask/', views.ask, name='ask'),
   path('settings/', views.settings, name='settings'),
+  path('set_mark/', views.set_mark, name='set_mark'),
+  path('check_mark/', views.check_mark, name='check_mark'),
+  path('correct_answer/', views.correct_answer, name='correct_answer'),
+  path('check_answer/', views.check_answer, name='check_answer'),
 
   # Просто заглушки
   path('logout/', views.logout, name='logout'),
