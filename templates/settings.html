@@ -1,39 +1,18 @@
 {% extends "layouts/base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block content %}
   <div class="col-8">
     <div class="d-flex gap-3 align-items-center">
       <h1>Settings: CoolGuy</h1>
     </div>
-    <form>
+    <form method="post" action="{% url "settings" %}" enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="form-group row mt-3">
-        <label for="login" class="col-sm-3 col-form-label">Login</label>
+        <label for="login" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-7">
-          <input type="text" class="form-control" id="login_input" placeholder="Mister_X">
-        </div>
-      </div>
-      <div class="form-group row mt-3">
-        <label for="email" class="col-sm-3 col-form-label">Email</label>
-        <div class="col-sm-7">
-          <input type="email" class="form-control" id="email_input" placeholder="misterx@mail.ru">
-        </div>
-      </div>
-      <div class="form-group row mt-3">
-        <label for="nick" class="col-sm-3 col-form-label">Nickname</label>
-        <div class="col-sm-7">
-          <input type="text" class="form-control" id="nick_input" placeholder="CoolGuy">
-        </div>
-      </div>
-      <div class="form-group row mt-3">
-        <label for="avatar" class="col-sm-3 col-form-label">Upload avatar</label>
-        <div class="col-sm-7">
-          <div class="d-flex justify-content-between gap-3">
-            <div class="border">
-              <img src="{% static 'images/img.jpg' %}" width="150" height="150" />
-            </div>
-          </div>
-          <input type="file" class="form-control-file mt-3" id="avatar_input">
+          {% bootstrap_form form %}
         </div>
       </div>
       <div class="form-group row mt-3">

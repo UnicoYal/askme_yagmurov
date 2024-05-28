@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  gunicorn:
+    build: ./script
+    ports:
+      - "8081:8081"
+
+  web:
+    build: .
+    command: gunicorn -c gunicorn.conf.py askme_yagmurov.wsgi:application
+    volumes:
+      - static_volume:/vol/static
+      - media_volume:/vol/uploads
+    ports:
+      - 9000:9000
+    env_file:
+      - askme_yagmurov/.env
+    depends_on:
+      - db
+    restart: "always"
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_USER_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/vol/static
+      - media_volume:/vol/uploads
+    ports:
+      - 80:80
+    depends_on:
+      - web
+    restart: "always"
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

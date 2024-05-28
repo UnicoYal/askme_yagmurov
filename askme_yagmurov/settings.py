@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from io import BytesIO
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
@@ -33,13 +37,14 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'app',
+    'bootstrap4',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
@@ -130,9 +135,29 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# directory where all static files of the app are going to be put
+STATIC_ROOT = "/vol/static"
+
+LOGIN_URL = 'login'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/uploads/'
+
+# directory where all files uploaded by users(media files) are going to be put
+MEDIA_ROOT = "/vol/uploads"
+
+# Путь к файлу изображения по умолчанию
+default_avatar_path = 'base.jpg'
+
+# Проверяем, существует ли файл изображения по умолчанию
+if not default_storage.exists(default_avatar_path):
+    # Загружаем файл изображения по умолчанию
+    with open(os.path.join(BASE_DIR, 'uploads', default_avatar_path), 'rb') as img:
+        img_content = img.read()
+        img_io = BytesIO(img_content)
+        default_storage.save(default_avatar_path, ContentFile(img_io.getvalue()))

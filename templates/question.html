@@ -1,16 +1,25 @@
 {% extends "layouts/base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block content %}
       <div class="col-8">
         <div class="row g-0 dark-bottom-border">
           <div class="col-3 p-2">
             <div class="border border-dark w-100 mb-3">
-              <img
-                src="{% static 'images/img.jpg' %}"
-                class="img-fluid rounded-start"
-                alt="..."
-              />
+            {% if question.user.profile.avatar %}
+                <img
+                  src="{{ question.user.profile.avatar.url }}"
+                  class="img-fluid rounded-start"
+                  alt="..."
+                />
+            {% else %}
+                <img
+                  src="{% static 'images/img.jpg' %}"
+                  class="img-fluid rounded-start"
+                  alt="..."
+                />
+            {% endif %}
             </div>
             {% include "components/like_selection.html" with item=question %}
           </div>
@@ -40,10 +49,11 @@
 
         {% include "components/pagination.html" with page_obj=answers %}
 
-      <form>
+      <form method="post", action="{% url 'question' question.id %}">
+        {% csrf_token %}
         <div class="form-group row mt-3">
           <div class="container">
-            <textarea class="form-control border-dark" id="text_input" placeholder="Enter your answer here.." rows="5"></textarea>
+            {% bootstrap_form form %}
           </div>
         </div>
 

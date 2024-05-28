@@ -1,5 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block content %}
   <div class="col-8">
@@ -7,23 +8,12 @@
       <h1>New Question</h1>
     </div>
 
-    <form>
+    <form method="post" action="{% url "ask" %}">
       <div class="form-group row mt-3">
-        <label for="title" class="col-sm-2 col-form-label">Title</label>
+        <label for="title" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-7">
-          <input type="title" class="form-control" id="title_input" placeholder="title">
-        </div>
-      </div>
-      <div class="form-group row mt-3">
-        <label for="text" class="col-sm-2 col-form-label">Text</label>
-        <div class="col-sm-7">
-          <textarea class="form-control" id="text_input" rows="5"></textarea>
-        </div>
-      </div>
-      <div class="form-group row mt-3">
-        <label for="tags" class="col-sm-2 col-form-label">Tags</label>
-        <div class="col-sm-7">
-          <input type="tags" class="form-control" id="tags_input" placeholder="tags">
+          {% csrf_token %}
+          {% bootstrap_form form %}
         </div>
       </div>
 

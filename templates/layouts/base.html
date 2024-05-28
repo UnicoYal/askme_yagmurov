@@ -12,6 +12,8 @@
       crossorigin="anonymous"
     />
     <link rel= "stylesheet" href="{% static 'stylesheets/application.css' %}"/>
+
+    {% csrf_token %}
   </head>
   <body class="d-flex flex-column min-vh-100">
     <nav class="navbar bg-body-tertiary">
@@ -29,13 +31,15 @@
           <a class="btn btn-outline-success" href="{% url 'ask' %}" role="button">ASK!</a>
          </div>
 
-        {% if is_auth %}
+         {% if request.user.is_authenticated %}
           <div class="d-flex justify-content-between gap-3">
+            {% if request.user.profile.avatar %}
             <div class="border">
-              <img src="{% static 'images/img.jpg' %}" width="50" height="50" />
+              <img src="{{ request.user.profile.avatar.url }}" width="50" height="50">
             </div>
+            {% endif %}
             <div class="d-flex flex-column justify-content-between">
-              <div>Dr. Pepper</div>
+              <div>{{ request.user.username }}</div>
               <div>
                 <a href="{% url "settings" %}">Settings</a>
                 <a href="{% url "logout" %}">Log out</a>
@@ -87,5 +91,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script src="{% static '/js/main.js' %}"></script>
   </body>
 </html>
