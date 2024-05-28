@@ -1,12 +1,10 @@
 # askme_yagmurov
 Для запуска проекта: <br/>
 
-python3 -m venv askme_venv - создайте виртуальное окружение с помощью встроенного модуля venv <br/>
-source askme_venv/bin/activate - активируйте виртуальное окружение(Linux и macOS) <br/>
-pip install -r requirements.txt - установите зависимости <br/>
-Создайте локально БД в PG (Докер и скрипты будут чуть позже, извините) <br/>
-Создайте .env файл в папке с setting.py и добавьте следующие энвы для базы данных("DB_NAME", "DB_USER", "DB_USER_PASSWORD", "DB_HOST", "DB_DB_PORT") <br/>
-python3 manage.py migrate - для прогона миграций <br/>
-python3 manage.py fill_db [ratio] - для предзаполнения БД <br/>
-python3 manage.py runserver - запустите сервер <br/>
-Откройте браузер и перейдите по адресу http://127.0.0.1:8000/ <br/>
+python3 -m venv askme_venv - создайте виртуальное окружение с помощью встроенного модуля venv
+source askme_venv/bin/activate - активируйте виртуальное окружение(Linux и macOS)
+pip install -r requirements.txt - установите зависимости
+docker-compose -f docker-compose.yml up -d --build <br/>
+Для доступа через Nginx: Откройте браузер и перейдите по адресу http://127.0.0.1/ либо http://localhost <br/>
+Для доступа через Gunicorn: Откройте браузер и перейдите по адресу http://127.0.0.1:9000/ <br/>
+Для доступа через к стороннему серверу Gunicorn, который слушает запросы: Откройте браузер и перейдите по адресу http://localhost:8081/ либо используйте курлы <br/>

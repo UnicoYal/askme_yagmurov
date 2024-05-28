@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
-from app.models import Question, Answer, Profile
+from app.models import Question, Answer, Profile, QuestionMark, AnswerMark
 from django.contrib import auth
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,9 @@ from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 from django.forms.forms import NON_FIELD_ERRORS
 from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+import json
 
 from .forms import UserForm, QuestionForm, AnswerForm
 
@@ -153,6 +156,74 @@ def settings(request):
 def logout(request):
   auth.logout(request)
   return redirect(request.META['HTTP_REFERER'])
+
+@csrf_protect
+@login_required
+@require_http_methods(['POST'])
+def set_mark(request):
+  body = json.loads(request.body)
+  if body['operation_type'] == 'like':
+    mark_value = 1
+  else:
+    mark_value = -1;
+
+  if body['item_type'] == 'question':
+    item = get_object_or_404(Question, pk=body['item_id'])
+    if item.has_mark_by_user(request.user):
+      return JsonResponse({"error": "Record not unique"})
+
+    QuestionMark.objects.create(question=item, value=mark_value, user=request.user)
+  else:
+    item = get_object_or_404(Answer, pk=body['item_id'])
+    if item.has_mark_by_user(request.user):
+      return JsonResponse({"error": "Record not unique"})
+
+    AnswerMark.objects.create(answer=item, value=mark_value, user=request.user)
+
+  body['likes_count'] = item.calculate_rating()
+
+  return JsonResponse(body)
+
+@csrf_protect
+@require_http_methods(['POST'])
+def check_mark(request):
+  body = json.loads(request.body)
+  if body['item_type'] == 'question':
+    item = get_object_or_404(Question, pk=body['item_id'])
+  else:
+    item = get_object_or_404(Answer, pk=body['item_id'])
+
+  user = get_object_or_404(User, pk=body['user_id'])
+  is_marked = item.has_mark_by_user(user)
+
+  return JsonResponse({"is_marked": is_marked})
+
+@csrf_protect
+@login_required
+@require_http_methods(['POST'])
+def correct_answer(request):
+  body = json.loads(request.body)
+  answer = get_object_or_404(Answer, pk=body['answer_id'])
+  if answer.question.user.id != request.user.id:
+    return JsonResponse({"error": 'You dont have access to this function'})
+
+  answer.is_correct = not answer.is_correct
+  answer.save()
+
+  return JsonResponse({"correct": answer.is_correct})
+
+
+@csrf_protect
+@require_http_methods(['POST'])
+def check_answer(request):
+  body = json.loads(request.body)
+  answer = get_object_or_404(Answer, pk=body['answer_id'])
+  response = {
+    "is_correct": answer.is_correct,
+    "is_question_author": answer.question.user.id == request.user.id
+  }
+
+  return JsonResponse(response)
 
 def user(request, user_id):
   return HttpResponse("Просто заглушка")
